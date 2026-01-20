@@ -126,8 +126,6 @@ btnSearch.addEventListener('click', async (event) => {
         weatherDesc.innerText = capitalizeFirstLetter(descriptionWeather);
         setWeatherIcon(iconCode, iconEl);
 
-        changeBackground(capitalizeFirstLetter(descriptionWeather))
-
         inputSearch.value = '';
 
         const nearbyResponse = await fetch(`https://api.openweathermap.org/data/2.5/find?lat=${lat}&lon=${lon}&cnt=10&units=metric&lang=pt_br&appid=${KEY}`);
@@ -180,37 +178,3 @@ btnSearch.addEventListener('click', async (event) => {
 
 
 });
-
-
-const mainEl = document.getElementById('main-weather');
-
-function changeBackground(situacion) {
-
-    console.log(situacion)
-
-    let bgUrl = "";
-
-    switch (situacion) {
-        case "Ceu limpo":
-            bgUrl = "../img/img-ensolarado.jpg";
-            break;
-        case "Nublado":
-            bgUrl = "../img/img-nublado.jpg";
-            break;
-        case "Chuva":
-            bgUrl = "../img/img-chuvoso.jpg";
-            break;
-        case "Nuvens dispersas":
-            bgUrl = "../img/img-nuvens-dispersas.jpg";
-            break;
-        case "Algumas nuvens":
-            bgUrl = "../img/img-nuvens-dispersas.jpg";
-            break;
-        default:
-            bgUrl = "../img/img-ensolarado.jpg";
-    }
-
-    mainEl.style.backgroundImage = `url('${bgUrl}')`;
-    mainEl.style.backgroundSize = "cover";
-    mainEl.style.backgroundPosition = "center";
-}
