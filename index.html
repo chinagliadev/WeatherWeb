@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather APP</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body class="m-0 vh-100 bg-black">
+    <main id="main-weather" class="container-fluid h-100 weather-main text-shadow-dados">
+        <div class="row h-100">
+
+            <aside class="col-3 d-none d-lg-block p-0">
+                <div class="weather-card p-3">
+                    <form class="d-flex flex-column align-items-center">
+                        <div class="input-group">
+                            <input id="inputSearch" type="text" class="form-control" placeholder="Digite a cidade..."
+                                aria-label="Cidade">
+                            <button id="btnSearch" class="btn-search" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+
+                        <div id="message-error" class="form-text mt-2 text-white fs-5 d-none">
+                            Por favor insira uma cidade valida
+                        </div>
+                    </form>
+
+
+                    <div class="weather-info d-none">
+                        <h2 class="weather-info-title">Clima Agora</h2>
+
+                        <ul class="weather-details">
+                            <li class="weather-item">
+                                <span class="label">Temp. Máx</span>
+                                <span id="temp-max" class="value">--°C</span>
+                            </li>
+
+                            <li class="weather-item">
+                                <span class="label">Temp. Mín</span>
+                                <span id="temp-min" class="value">--°C</span>
+                            </li>
+
+                            <li class="weather-item">
+                                <span class="label">Umidade</span>
+                                <span id="humidity" class="value">--%</span>
+                            </li>
+
+                            <li class="weather-item">
+                                <span class="label">Nuvens</span>
+                                <span class="value">
+                                    <i id="weather-icon" class="bi"></i>
+                                    <span id="clouds">--%</span>
+                                </span>
+
+                            </li>
+
+                            <li class="weather-item">
+                                <span class="label">Vento</span>
+                                <span id="wind-weather" class="value">-- km/h</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </aside>
+
+            <section class="not-found-weather col-9 welcome-weather d-none" id="not-found">
+                <h1 class="title-welcome">Oops! Cidade não encontrada</h1>
+                <p>Verifique o nome digitado e tente novamente.</p>
+                <img src="./img/404 Error-cuate.png" alt="imagem do 404 not found" style="max-width: 650px;">
+            </section>
+
+            <section class="welcome-weather col-9" id="weather-welcome">
+                <h1 class="title-welcome">Bem-vindo ao Weather APP</h1>
+                <p style="max-width: 700px;" class="text-center">
+                    O Weather APP permite consultar informações do clima de forma rápida e fácil,
+                    mostrando a temperatura, umidade, vento e condições do tempo em tempo real.
+                </p>
+                <img style="width: 700px;" class="img-fluid" src="./img/Weather-amico.png" alt="">
+            </section>
+
+            <section id="section-weather"
+                class="col-9 p-5 overflow-auto h-100 d-flex flex-column text-shadow-dados d-none">
+                <header class="header-weather">
+                    <div class="logo-header">
+                        <span>
+                            <i class="bi bi-brightness-alt-high"></i>
+                            Weather APP
+                        </span>
+                    </div>
+                </header>
+
+                <div class="weather-data mt-4">
+                    <div class="weather-description text-end">
+                        <p id="weather-desc"></p>
+
+                        <div class="weather-information d-flex align-items-center justify-content-end">
+                            <p class="tempWeather" id="temp-weather"></p>
+                            <div class="information-city ms-3">
+                                <h2 class="cityWeather" id="city-weather"></h2>
+                                <p id="dataOfWeather" class="dataWeather"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id="nearby-cities-row" class="row h-100 mt-4 g-4">
+                </div>
+                
+            </section>
+        </div>
+    </main>
+
+    <script src="./app.js"></script>
+</body>
+
+</html>
