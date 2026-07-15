@@ -1,147 +1,146 @@
-const KEY = "efefc9a32020a169b360e01a3002905e";
+const CHAVE = "efefc9a32020a169b360e01a3002905e";
 
-const divWeatherInfo = document.querySelector('.weather-info')
-const weatherWelcome = document.querySelector('#weather-welcome')
-const notFound = document.querySelector('#not-found')
+const divInfoClima = document.querySelector('.weather-info')
+const boasVindasClima = document.querySelector('#weather-welcome')
+const naoEncontrado = document.querySelector('#not-found')
 
-
-async function getWeatherData(city) {
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},BR&units=metric&lang=pt_br&appid=${KEY}`;
-    const response = await fetch(weatherUrl);
-    const dados = await response.json();
+async function obterDadosClima(cidade) {
+    const urlClima = `https://api.openweathermap.org/data/2.5/weather?q=${cidade},BR&units=metric&lang=pt_br&appid=${CHAVE}`;
+    const resposta = await fetch(urlClima);
+    const dados = await resposta.json();
     return dados;
 }
 
 const regex = /^[^\d]+$/;
 
-function validateCity(valor) {
+function validarCidade(valor) {
     return regex.test(valor);
 }
 
-function capitalizeFirstLetter(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
+function capitalizarPrimeiraLetra(texto) {
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
-function setWeatherIcon(iconCode, element) {
-    element.className = 'bi';
-    const isNight = iconCode.endsWith('n');
+function definirIconeClima(codigoIcone, elemento) {
+    elemento.className = 'bi';
+    const ehNoite = codigoIcone.endsWith('n');
 
-    if (iconCode.startsWith('01')) element.classList.add(isNight ? 'bi-moon' : 'bi-sun');
-    else if (iconCode.startsWith('02')) element.classList.add(isNight ? 'bi-cloud-moon' : 'bi-cloud-sun');
-    else if (iconCode.startsWith('03') || iconCode.startsWith('04')) element.classList.add('bi-cloud');
-    else if (iconCode.startsWith('09')) element.classList.add('bi-cloud-drizzle');
-    else if (iconCode.startsWith('10')) element.classList.add('bi-cloud-rain');
-    else if (iconCode.startsWith('11')) element.classList.add('bi-cloud-lightning');
-    else if (iconCode.startsWith('13')) element.classList.add('bi-snow');
-    else if (iconCode.startsWith('50')) element.classList.add('bi-cloud-fog');
+    if (codigoIcone.startsWith('01')) elemento.classList.add(ehNoite ? 'bi-moon' : 'bi-sun');
+    else if (codigoIcone.startsWith('02')) elemento.classList.add(ehNoite ? 'bi-cloud-moon' : 'bi-cloud-sun');
+    else if (codigoIcone.startsWith('03') || codigoIcone.startsWith('04')) elemento.classList.add('bi-cloud');
+    else if (codigoIcone.startsWith('09')) elemento.classList.add('bi-cloud-drizzle');
+    else if (codigoIcone.startsWith('10')) elemento.classList.add('bi-cloud-rain');
+    else if (codigoIcone.startsWith('11')) elemento.classList.add('bi-cloud-lightning');
+    else if (codigoIcone.startsWith('13')) elemento.classList.add('bi-snow');
+    else if (codigoIcone.startsWith('50')) elemento.classList.add('bi-cloud-fog');
 }
 
-const btnSearch = document.querySelector('#btnSearch')
-const inputSearch = document.querySelector('#inputSearch')
-const messageErro = document.querySelector('#message-error')
+const btnBuscar = document.querySelector('#btnSearch')
+const formBusca = document.querySelector('form')
+const inputBusca = document.querySelector('#inputSearch')
+const mensagemErro = document.querySelector('#message-error')
 
-const tempWeather = document.querySelector('#temp-weather')
-const weatherDesc = document.querySelector('#weather-desc')
-const cityWeather = document.querySelector('#city-weather')
-const dateWeather = document.querySelector('#dataOfWeather')
+const tempClima = document.querySelector('#temp-weather')
+const descClima = document.querySelector('#weather-desc')
+const cidadeClima = document.querySelector('#city-weather')
+const dataClima = document.querySelector('#dataOfWeather')
 
 const tempMaxEl = document.querySelector('#temp-max');
 const tempMinEl = document.querySelector('#temp-min');
-const humidityEl = document.querySelector('#humidity');
-const cloudsEl = document.querySelector('#clouds');
-const iconEl = document.querySelector('#weather-icon');
+const umidadeEl = document.querySelector('#humidity');
+const nuvensEl = document.querySelector('#clouds');
+const iconeEl = document.querySelector('#weather-icon');
 
-const windEl = document.querySelector('#wind-weather');
+const ventoEl = document.querySelector('#wind-weather');
 
 const sectionEl = document.querySelector('#section-weather');
 
+function atualizarDataClima() {
+    const data = new Date()
+    const hora = String(data.getHours()).padStart(2, '0')
+    const minutos = String(data.getMinutes()).padStart(2, '0')
 
+    const diaSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'][data.getDay()]
+    const dia = data.getDate()
+    const mes = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'][data.getMonth()]
+    const ano = data.getFullYear()
 
-function updateDateWeather() {
-    const date = new Date()
-    const hour = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-
-    const dayOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'][date.getDay()]
-    const day = date.getDate()
-    const month = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'][date.getMonth()]
-    const year = date.getFullYear()
-
-    dateWeather.innerText = `${dayOfWeek}, ${day} de ${month} de ${year} - ${hour}:${minutes}`
+    dataClima.innerText = `${diaSemana}, ${dia} de ${mes} de ${ano} - ${hora}:${minutos}`
 }
 
-updateDateWeather()
-setInterval(updateDateWeather, 60000)
+atualizarDataClima()
+setInterval(atualizarDataClima, 60000)
 
-btnSearch.addEventListener('click', async (event) => {
-    event.preventDefault();
+function mostrarApenas(visao) {
+    boasVindasClima.classList.add('d-none');
+    mensagemErro.classList.add('d-none');
+    naoEncontrado.classList.add('d-none');
+    sectionEl.classList.add('d-none');
+    divInfoClima.classList.add('d-none');
 
-    const valueInput = inputSearch.value.trim();
-    if (valueInput === '' || !validateCity(valueInput)) {
-        messageErro.classList.remove('d-none');
-        sectionEl.classList.add('d-none')
-        divWeatherInfo.classList.add('d-none')
-        weatherWelcome.classList.remove('d-none')
+    if (visao === 'boasVindas') boasVindasClima.classList.remove('d-none');
+    if (visao === 'erro') mensagemErro.classList.remove('d-none');
+    if (visao === 'naoEncontrado') naoEncontrado.classList.remove('d-none');
+    if (visao === 'resultado') {
+        sectionEl.classList.remove('d-none');
+        divInfoClima.classList.remove('d-none');
+    }
+}
+
+formBusca.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+
+    const valorInput = inputBusca.value.trim();
+    if (valorInput === '' || !validarCidade(valorInput)) {
+        mostrarApenas('erro');
         return;
     }
 
-    messageErro.classList.add('d-none');
-    sectionEl.classList.remove('d-none')
-    divWeatherInfo.classList.remove('d-none')
-    weatherWelcome.classList.add('d-none')
+    mensagemErro.classList.add('d-none');
 
-    const dados = await getWeatherData(valueInput);
+    const dados = await obterDadosClima(valorInput);
 
     if (Number(dados.cod) === 404) {
-        notFound.classList.remove('d-none')
-        sectionEl.classList.add('d-none')
-        divWeatherInfo.classList.add('d-none')
-
-        inputSearch.value = ''
+        mostrarApenas('naoEncontrado');
+        inputBusca.value = ''
     } else {
-
-        notFound.classList.add('d-none')
-        divWeatherInfo.classList.remove('d-none')
-        sectionEl.classList.remove('d-none')
-
-        const temperature = dados.main.temp;
-        const tempMaxWeather = dados.main.temp_max;
-        const tempMinWeather = dados.main.temp_min;
-        const windSpeed = (dados.wind.speed * 3.6).toFixed(1);
-        const humidity = dados.main.humidity;
-        const clouds = dados.clouds.all;
-        const descriptionWeather = dados.weather[0].description;
-        const iconCode = dados.weather[0].icon;
+        const temperatura = dados.main.temp;
+        const tempMaxClima = dados.main.temp_max;
+        const tempMinClima = dados.main.temp_min;
+        const velocidadeVento = (dados.wind.speed * 3.6).toFixed(1);
+        const umidade = dados.main.humidity;
+        const nuvens = dados.clouds.all;
+        const descricaoClima = dados.weather[0].description;
+        const codigoIcone = dados.weather[0].icon;
         const lon = dados.coord.lon;
         const lat = dados.coord.lat;
-        const name = dados.name;
+        const nome = dados.name;
 
-        cityWeather.innerHTML = name;
-        tempWeather.innerText = `${temperature.toFixed(0)}°C`;
-        tempMinEl.innerText = `${tempMinWeather.toFixed(1)}°C`;
-        tempMaxEl.innerText = `${tempMaxWeather.toFixed(1)}°C`;
-        windEl.innerText = `${windSpeed} km/h`;
-        humidityEl.innerText = `${humidity}%`;
-        cloudsEl.innerText = `${clouds}%`;
-        weatherDesc.innerText = capitalizeFirstLetter(descriptionWeather);
-        setWeatherIcon(iconCode, iconEl);
+        cidadeClima.innerHTML = nome;
+        tempClima.innerText = `${temperatura.toFixed(0)}°C`;
+        tempMinEl.innerText = `${tempMinClima.toFixed(1)}°C`;
+        tempMaxEl.innerText = `${tempMaxClima.toFixed(1)}°C`;
+        ventoEl.innerText = `${velocidadeVento} km/h`;
+        umidadeEl.innerText = `${umidade}%`;
+        nuvensEl.innerText = `${nuvens}%`;
+        descClima.innerText = capitalizarPrimeiraLetra(descricaoClima);
+        definirIconeClima(codigoIcone, iconeEl);
 
-        inputSearch.value = '';
+        inputBusca.value = '';
 
-        const nearbyResponse = await fetch(`https://api.openweathermap.org/data/2.5/find?lat=${lat}&lon=${lon}&cnt=10&units=metric&lang=pt_br&appid=${KEY}`);
-        const nearbyData = await nearbyResponse.json();
+        const respostaProximas = await fetch(`https://api.openweathermap.org/data/2.5/find?lat=${lat}&lon=${lon}&cnt=10&units=metric&lang=pt_br&appid=${CHAVE}`);
+        const dadosProximas = await respostaProximas.json();
 
-        const nearbyCities = nearbyData.list
-            .filter(c => c.name !== name)
+        const cidadesProximas = dadosProximas.list
+            .filter(c => c.name !== nome)
             .slice(0, 4);
 
+        const containerProximas = document.querySelector('#nearby-cities-row');
+        containerProximas.innerHTML = '';
 
-        const nearbyContainer = document.querySelector('#nearby-cities-row');
-        nearbyContainer.innerHTML = '';
+        const fragmento = document.createDocumentFragment();
 
-        const fragment = document.createDocumentFragment();
-
-        nearbyCities.forEach(cidade => {
+        cidadesProximas.forEach(cidade => {
             const col = document.createElement('div');
             col.classList.add('col-12', 'col-sm-6', 'col-md-3');
 
@@ -156,7 +155,7 @@ btnSearch.addEventListener('click', async (event) => {
         <div class="card-body-weather">
             <h4 class="card-city">${cidade.name}</h4>
             <span>${cidade.sys?.country || 'BR'}</span>
-            <p class="weather-desc-card">${capitalizeFirstLetter(cidade.weather[0].description)}</p>
+            <p class="weather-desc-card">${capitalizarPrimeiraLetra(cidade.weather[0].description)}</p>
         </div>
         <div class="card-footer-weather mt-2 d-flex justify-content-between">
             <span>${cidade.main.humidity}%</span>
@@ -164,17 +163,15 @@ btnSearch.addEventListener('click', async (event) => {
         </div>
     `;
 
-            const iconElCard = card.querySelector('.weather-icon-card');
-            setWeatherIcon(cidade.weather[0].icon, iconElCard);
+            const iconeElCard = card.querySelector('.weather-icon-card');
+            definirIconeClima(cidade.weather[0].icon, iconeElCard);
 
             col.appendChild(card);
-            fragment.appendChild(col);
+            fragmento.appendChild(col);
         });
 
-        nearbyContainer.appendChild(fragment);
+        containerProximas.appendChild(fragmento);
 
+        mostrarApenas('resultado');
     }
-
-
-
 });
