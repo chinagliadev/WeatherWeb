@@ -1,3 +1,5 @@
+const CHAVE = "efefc9a32020a169b360e01a3002905e";
+
 const divInfoClima = document.querySelector('.weather-info')
 const boasVindasClima = document.querySelector('#weather-welcome')
 const naoEncontrado = document.querySelector('#not-found')
